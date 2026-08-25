@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t sairam4526/saibank-app:ci .
+        run: docker build -t sairam4526/saibank-app:${{ github.sha }} .
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -23,4 +23,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push Docker image
-        run: docker push sairam4526/saibank-app:ci
+        run: docker push sairam4526/saibank-app:${{ github.sha }}
