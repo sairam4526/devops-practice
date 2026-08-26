@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Welcome to SaiBank - Version 3!"
+    return "Welcome to SaiBank - Version 4!"
 
 @app.route("/login")
 def login():
