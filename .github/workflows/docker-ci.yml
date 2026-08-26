@@ -21,6 +21,17 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Push Docker image
         run: docker push sairam4526/saibank-app:${{ github.sha }}
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull sairam4526/saibank-app:${{ github.sha }}
+            docker stop saibank-prod || true
+            docker rm saibank-prod || true
+            docker run -d --name saibank-prod -p 5000:5000 sairam4526/saibank-app:${{ github.sha }}
