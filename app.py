@@ -22,14 +22,24 @@ def init_db():
     """)
 
     conn.execute("""
-    CREATE UNIQUE INDEX IF NOT EXISTS idx_transactions_unique
-    ON transactions(customer_id, description, amount)
+CREATE TABLE IF NOT EXISTS transactions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    customer_id INTEGER NOT NULL,
+    description TEXT NOT NULL,
+    amount REAL NOT NULL
+)
+""")
+
+    conn.execute("""
+CREATE UNIQUE INDEX IF NOT EXISTS idx_transactions_unique
+ON transactions(customer_id, description, amount)
 """)
     
     conn.execute(
         "INSERT OR IGNORE INTO customers (id, name, balance) VALUES (?, ?, ?)",
         (101, "Ravi", 50000)
     )
+
 
     conn.execute(
         "INSERT OR IGNORE INTO customers (id, name, balance) VALUES (?, ?, ?)",
@@ -40,14 +50,7 @@ def init_db():
         "INSERT OR IGNORE INTO customers (id, name, balance) VALUES (?, ?, ?)",
         (103, "Ram", 80000)
     )
-    conn.execute("""
-    CREATE TABLE IF NOT EXISTS transactions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        customer_id INTEGER NOT NULL,
-        description TEXT NOT NULL,
-        amount REAL NOT NULL
-        )
-    """)
+
     conn.execute(
         "INSERT OR IGNORE INTO transactions (customer_id, description, amount) VALUES (?, ?, ?)",
         (101, "Grocery", 2000)
